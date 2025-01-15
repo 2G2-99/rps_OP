@@ -55,3 +55,24 @@ Play Game
     return "Machine wins with ___ points"
 
  */
+
+let roundTarget = 0;
+let roundCounter = 0;
+let playerpoints = 0;
+let computerPoints = 0;
+
+function getComputerChoice() {
+  let randomNumber = parseInt(Math.random() * 3);
+  switch (randomNumber) {
+    case 0:
+      return "rock";
+      break;
+    case 1:
+      return "paper";
+      break;
+    case 2:
+      return "scissors";
+  }
+}
+
+let computerMove = getComputerChoice();
