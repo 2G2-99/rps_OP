@@ -58,8 +58,8 @@ Play Game
 
 let roundTarget = 0;
 let roundCounter = 0;
-let playerpoints = 0;
-let computerPoints = 0;
+let playerScore = 0;
+let computerScore = 0;
 
 function getComputerChoice() {
   let randomNumber = parseInt(Math.random() * 3);
@@ -74,5 +74,22 @@ function getComputerChoice() {
       return "scissors";
   }
 }
-
 let computerMove = getComputerChoice();
+
+function getPlayerChoice() {
+  let input = window.window
+    .prompt(
+      'Please select one of the three movements.\n"Rock", "Paper" or "Scissors"',
+      ""
+    )
+    .toLowerCase();
+
+  if (input === "rock" || input === "paper" || input === "scissors") {
+    window.alert(`You are playing with "${input}"`);
+    return input;
+  } else {
+    window.alert("Please enter a valid move");
+    return getPlayerChoice();
+  }
+}
+let playerMove = getPlayerChoice();
