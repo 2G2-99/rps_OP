@@ -56,8 +56,7 @@ Play Game
 
  */
 
-let roundTarget = 0;
-let roundCounter = 0;
+let roundCounter = 1;
 let playerScore = 0;
 let computerScore = 0;
 
@@ -65,16 +64,18 @@ function getComputerChoice() {
   let randomNumber = parseInt(Math.random() * 3);
   switch (randomNumber) {
     case 0:
+      window.alert(`The machine is playing with "rock"`);
       return "rock";
       break;
     case 1:
+      window.alert(`The machine is playing with "paper"`);
       return "paper";
       break;
     case 2:
+      window.alert(`The machine is playing with "scissors"`);
       return "scissors";
   }
 }
-let computerMove = getComputerChoice();
 
 function getPlayerChoice() {
   let input = window.window
@@ -92,4 +93,54 @@ function getPlayerChoice() {
     return getPlayerChoice();
   }
 }
-let playerMove = getPlayerChoice();
+
+function playRound(playerChoice, computerChoice) {
+  if (playerChoice === computerChoice) {
+    window.alert(`It's a tie, no one scores!.`);
+    window.alert(
+      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
+    );
+  } else if (
+    (playerChoice === "rock" && computerChoice === "scissors") ||
+    (playerChoice === "paper" && computerChoice === "rock") ||
+    (playerChoice === "scissors" && computerChoice === "paper")
+  ) {
+    playerScore += 1;
+    window.alert(`You won, ${playerChoice} beats ${computerChoice}!`);
+    window.alert(
+      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
+    );
+  } else if (
+    (computerChoice === "rock" && playerChoice === "scissors") ||
+    (computerChoice === "paper" && playerChoice === "rock") ||
+    (computerChoice === "scissors" && playerChoice === "paper")
+  ) {
+    computerScore += 1;
+    window.alert(`You lose, ${computerChoice} beats ${playerChoice}!`);
+    window.alert(
+      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
+    );
+  }
+}
+
+function playGame() {
+  while (roundCounter <= 5) {
+    window.alert(`ROUND ${roundCounter}`);
+    playerMove = getPlayerChoice();
+    computerMove = getComputerChoice();
+    playRound(playerMove, computerMove);
+    roundCounter += 1;
+  }
+
+  window.alert(`FINAL SCORE:\n Player ${playerScore} - CPU ${computerScore}`);
+
+  if (playerScore > computerScore) {
+    window.alert(`You win the game!`);
+  } else if (computerScore > playerScore) {
+    window.alert(`You lose the game!`);
+  } else {
+    window.alert(`Its a draw`);
+  }
+}
+
+playGame();
