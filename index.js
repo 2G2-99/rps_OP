@@ -44,8 +44,7 @@ function createMessage(text) {
   const message = document.createElement('p');
   message.textContent = text;
   message.classList.add('message');
-
-  return message;
+  messages.appendChild(message);
 }
 
 //////////////////////////////////////////////////////////////////
@@ -60,28 +59,31 @@ function getComputerChoice() {
 
   switch (randomNumber) {
     case 0:
-      console.log(`The machine is playing with "rock"`);
+      createMessage(`The machine is playing with "rock"`);
       return 'rock';
       break;
     case 1:
-      console.log(`The machine is playing with "paper"`);
+      createMessage(`The machine is playing with "paper"`);
+
       return 'paper';
       break;
     case 2:
-      console.log(`The machine is playing with "scissors"`);
+      createMessage(`The machine is playing with "scissors"`);
+
       return 'scissors';
   }
 }
 
 function getPlayerChoice(e) {
   let choice = e.target;
+  let choiceMessage = `You are playing with "${choice.id}"`;
 
   if (
     choice.id === 'rock' ||
     choice.id === 'paper' ||
     choice.id === 'scissors'
   ) {
-    console.log(`You are playing with "${choice.id}"`);
+    createMessage(choiceMessage);
     choice.setAttribute('style', 'background: #1E1E24; color: #F7F7FF; ');
     return choice.id;
   }
@@ -96,23 +98,29 @@ function handleChoice(e) {
 
 function playRound(playerChoice, computerChoice) {
   if (playerChoice === computerChoice) {
-    console.log(`It's a tie, no one scores!.`);
-    console.log(`The score is:\n Player ${playerScore} - CPU ${computerScore}`);
+    createMessage(`It's a tie, no one scores!.`);
+    createMessage(
+      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
+    );
   } else if (
     (playerChoice === 'rock' && computerChoice === 'scissors') ||
     (playerChoice === 'paper' && computerChoice === 'rock') ||
     (playerChoice === 'scissors' && computerChoice === 'paper')
   ) {
     playerScore += 1;
-    console.log(`You won, ${playerChoice} beats ${computerChoice}!`);
-    console.log(`The score is:\n Player ${playerScore} - CPU ${computerScore}`);
+    createMessage(`You won, ${playerChoice} beats ${computerChoice}!`);
+    createMessage(
+      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
+    );
   } else if (
     (computerChoice === 'rock' && playerChoice === 'scissors') ||
     (computerChoice === 'paper' && playerChoice === 'rock') ||
     (computerChoice === 'scissors' && playerChoice === 'paper')
   ) {
     computerScore += 1;
-    console.log(`You lose, ${computerChoice} beats ${playerChoice}!`);
-    console.log(`The score is:\n Player ${playerScore} - CPU ${computerScore}`);
+    createMessage(`You lose, ${computerChoice} beats ${playerChoice}!`);
+    createMessage(
+      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
+    );
   }
 }
