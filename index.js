@@ -7,9 +7,13 @@
 
 const playGround = document.querySelector('#playground');
 const selectionButtons = document.createElement('div');
+const messages = document.createElement('div');
 
 selectionButtons.setAttribute('id', 'selection');
 selectionButtons.classList.add('container');
+
+messages.setAttribute('id', 'messages');
+messages.classList.add('container');
 
 const ROCK = document.createElement('button');
 ROCK.setAttribute('id', 'rock');
@@ -35,6 +39,14 @@ choicesList.forEach(choice => {
 
 playGround.appendChild(selectionButtons);
 playGround.appendChild(messages);
+
+function createMessage(text) {
+  const message = document.createElement('p');
+  message.textContent = text;
+  message.classList.add('message');
+
+  return message;
+}
 
 //////////////////////////////////////////////////////////////////
 
