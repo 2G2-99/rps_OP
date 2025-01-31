@@ -1,53 +1,50 @@
-// # DOM
+// # UI
+// Containers
+const SCOREBOARD = document.querySelector('#scoreboard.container');
+const INFO = document.querySelector('#info');
+const SCORE = document.querySelector('#scores');
+const BUTTONS_LIST = document.querySelector('#btn-list');
 
-/*
- * Change all console.logs for DOM elements
+// Info & Scores
+const INFO_MESSAGE = document.querySelector('#info .message');
+const SCORE_MESSAGE = document.querySelector('#score .message');
 
- */
+// Buttons
+const ROCK = document.querySelector('#rock');
+const PAPER = document.querySelector('#paper');
+const SCISSORS = document.querySelector('#scissors');
 
-const playGround = document.querySelector('#playground');
-const selectionButtons = document.createElement('div');
-const messages = document.createElement('div');
-
-selectionButtons.setAttribute('id', 'selection');
-selectionButtons.classList.add('container');
-
-messages.setAttribute('id', 'messages');
-messages.classList.add('container');
-
-const ROCK = document.createElement('button');
-ROCK.setAttribute('id', 'rock');
 ROCK.textContent = 'ROCK';
-selectionButtons.appendChild(ROCK);
-
-const PAPER = document.createElement('button');
-PAPER.setAttribute('id', 'paper');
 PAPER.textContent = 'PAPER';
-selectionButtons.appendChild(PAPER);
-
-const SCISSORS = document.createElement('button');
-SCISSORS.setAttribute('id', 'scissors');
 SCISSORS.textContent = 'SCISSORS';
-selectionButtons.appendChild(SCISSORS);
 
-let choicesList = selectionButtons.querySelectorAll('button');
+let choicesList = BUTTONS_LIST.querySelectorAll('button');
 
 choicesList.forEach(choice => {
   choice.classList.add('btn');
   choice.addEventListener('click', handleChoice);
 });
 
-playGround.appendChild(selectionButtons);
-playGround.appendChild(messages);
+// Displays a message on a given element
+function setMessage(text, element) {
+  // In case the element has no text, the given text will fill the element
+  if (!element.textContent) {
+    element.textContent = text;
+  } else {
+    // A reference to the element's parent is created and a "paragraph" element is created
+    let parent = element.parentNode;
+    let paragraph = document.createElement('p');
 
-function createMessage(text) {
-  const message = document.createElement('p');
-  message.textContent = text;
-  message.classList.add('message');
-  messages.appendChild(message);
+    //In case the parent element has more than one child then the last child is removed
+    if (parent.childNodes.length > 1) {
+      parent.removeChild(parent.lastChild);
+    }
+
+    // We fill the new "paragraph" element and fill it with the message
+    paragraph.textContent = text;
+    parent.appendChild(paragraph);
+  }
 }
-
-//////////////////////////////////////////////////////////////////
 
 // # GAME
 let roundCounter = 1;
@@ -57,70 +54,66 @@ let computerScore = 0;
 function getComputerChoice() {
   let randomNumber = parseInt(Math.random() * 3);
 
+  // Depending on the number obtained from randomNumber a move is returned
   switch (randomNumber) {
     case 0:
-      createMessage(`The machine is playing with "rock"`);
       return 'rock';
       break;
     case 1:
-      createMessage(`The machine is playing with "paper"`);
-
       return 'paper';
       break;
     case 2:
-      createMessage(`The machine is playing with "scissors"`);
-
       return 'scissors';
   }
 }
 
 function getPlayerChoice(e) {
   let choice = e.target;
-  let choiceMessage = `You are playing with "${choice.id}"`;
 
   if (
     choice.id === 'rock' ||
     choice.id === 'paper' ||
     choice.id === 'scissors'
   ) {
-    createMessage(choiceMessage);
     choice.setAttribute('style', 'background: #1E1E24; color: #F7F7FF; ');
     return choice.id;
   }
 }
 
 function handleChoice(e) {
+  INFO_MESSAGE.textContent = '';
+
   const playerChoice = getPlayerChoice(e);
   const computerChoice = getComputerChoice();
-
+  setMessage(`${playerChoice} against ${computerChoice}`, INFO_MESSAGE);
   playRound(playerChoice, computerChoice);
 }
 
 function playRound(playerChoice, computerChoice) {
   if (playerChoice === computerChoice) {
-    createMessage(`It's a tie, no one scores!.`);
-    createMessage(
-      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
-    );
+    setMessage(`It's a tie, no one scores!.`, INFO_MESSAGE);
+    setMessage(`Player ${playerScore} - CPU ${computerScore}`, SCORE_MESSAGE);
   } else if (
     (playerChoice === 'rock' && computerChoice === 'scissors') ||
     (playerChoice === 'paper' && computerChoice === 'rock') ||
     (playerChoice === 'scissors' && computerChoice === 'paper')
   ) {
     playerScore += 1;
-    createMessage(`You won, ${playerChoice} beats ${computerChoice}!`);
-    createMessage(
-      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
+    setMessage(
+      `You won, ${playerChoice} beats ${computerChoice}!`,
+      INFO_MESSAGE
     );
+    setMessage(`Player ${playerScore} - CPU ${computerScore}`, SCORE_MESSAGE);
   } else if (
     (computerChoice === 'rock' && playerChoice === 'scissors') ||
     (computerChoice === 'paper' && playerChoice === 'rock') ||
     (computerChoice === 'scissors' && playerChoice === 'paper')
   ) {
     computerScore += 1;
-    createMessage(`You lose, ${computerChoice} beats ${playerChoice}!`);
-    createMessage(
-      `The score is:\n Player ${playerScore} - CPU ${computerScore}`
+    setMessage(
+      `You lose, ${computerChoice} beats ${playerChoice}!`,
+      INFO_MESSAGE
     );
+    setMessage(`Player ${playerScore} - CPU ${computerScore}`, SCORE_MESSAGE);
   }
 }
