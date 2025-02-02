@@ -26,6 +26,13 @@ choicesList.forEach(choice => {
   choice.addEventListener('click', handleChoice);
 });
 
+function capitalizeFirstChar(string) {
+  if (!string) return '';
+
+  const [firstChar, ...rest] = string;
+  return `${firstChar.toUpperCase()}${rest.join('')}`;
+}
+
 // Displays a message on a given element
 function setMessage(text, element) {
   // In case the element has no text, the given text will fill the element
@@ -54,9 +61,30 @@ function removeTransition() {
   });
 }
 
+function displayScore(playerScore, computerScore) {
+  setMessage(`Player ${playerScore} - CPU ${computerScore}`, SCORE_MESSAGE);
+}
+
+function displayRoundInfo(winner) {
+  const message = `${RESULT_MESSAGES[winner]}`;
+  setMessage(message, INFO_MESSAGE);
+}
+
 // # GAME
 let playerScore = 0;
 let computerScore = 0;
+
+const GAME_RULES = {
+  rock: 'scissors',
+  paper: 'rock',
+  scissors: 'paper',
+};
+
+const RESULT_MESSAGES = {
+  tie: "It's a tie!",
+  player: 'You win this round!',
+  computer: 'Computer wins this round!',
+};
 
 function getComputerChoice() {
   let randomNumber = Math.floor(Math.random() * 3);
@@ -96,39 +124,31 @@ function handleChoice(e) {
   INFO_MESSAGE.textContent = '';
 
   // The value of "getPlayerChoice" and "getComputerChoice" are stored in variables
-  const playerChoice = getPlayerChoice(e);
-  const computerChoice = getComputerChoice();
+  const playerChoice = capitalizeFirstChar(getPlayerChoice(e));
+  const computerChoice = capitalizeFirstChar(getComputerChoice());
 
   // setMessage with the values of both choices and play the round
   setMessage(`${playerChoice} against ${computerChoice}`, INFO_MESSAGE);
   playRound(playerChoice, computerChoice);
 }
 
-function playRound(playerChoice, computerChoice) {
-  if (playerChoice === computerChoice) {
-    setMessage(`It's a tie, no one scores!.`, INFO_MESSAGE);
-    setMessage(`Player ${playerScore} - CPU ${computerScore}`, SCORE_MESSAGE);
-  } else if (
-    (playerChoice === 'rock' && computerChoice === 'scissors') ||
-    (playerChoice === 'paper' && computerChoice === 'rock') ||
-    (playerChoice === 'scissors' && computerChoice === 'paper')
-  ) {
-    playerScore += 1;
-    setMessage(
-      `You won, ${playerChoice} beats ${computerChoice}!`,
-      INFO_MESSAGE
-    );
-    setMessage(`Player ${playerScore} - CPU ${computerScore}`, SCORE_MESSAGE);
-  } else if (
-    (computerChoice === 'rock' && playerChoice === 'scissors') ||
-    (computerChoice === 'paper' && playerChoice === 'rock') ||
-    (computerChoice === 'scissors' && playerChoice === 'paper')
-  ) {
-    computerScore += 1;
-    setMessage(
-      `You lose, ${computerChoice} beats ${playerChoice}!`,
-      INFO_MESSAGE
-    );
-    setMessage(`Player ${playerScore} - CPU ${computerScore}`, SCORE_MESSAGE);
-  }
+function playRound(player, computer) {
+  const winner = determineWinner(player, computer);
+  const scores = updateScores(winner);
+
+  displayRoundInfo(winner);
+  displayScore(scores.playerScore, scores.computerScore);
+}
+
+function determineWinner(playerChoice, computerChoice) {
+  if (playerChoice === computerChoice) return 'tie';
+
+  // This checks if playerChoice and computerChoice are the same, based on GAME_RULES
+  return GAME_RULES[playerChoice] === computerChoice ? 'player' : 'computer';
+}
+
+function updateScores(winner) {
+  if (winner === 'player') playerScore += 1;
+  if (winner === 'computer') computerScore += 1;
+  return { playerScore, computerScore };
 }
