@@ -124,11 +124,16 @@ function handleChoice(e) {
   INFO_MESSAGE.textContent = '';
 
   // The value of "getPlayerChoice" and "getComputerChoice" are stored in variables
-  const playerChoice = capitalizeFirstChar(getPlayerChoice(e));
-  const computerChoice = capitalizeFirstChar(getComputerChoice());
+  const playerChoice = getPlayerChoice(e);
+  const computerChoice = getComputerChoice();
+  const capitalizedPlayer = capitalizeFirstChar(playerChoice);
+  const capitalizedComputer = capitalizeFirstChar(computerChoice);
 
   // setMessage with the values of both choices and play the round
-  setMessage(`${playerChoice} against ${computerChoice}`, INFO_MESSAGE);
+  setMessage(
+    `${capitalizedPlayer} against ${capitalizedComputer}`,
+    INFO_MESSAGE
+  );
   playRound(playerChoice, computerChoice);
 }
 
