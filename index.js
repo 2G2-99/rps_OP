@@ -20,6 +20,7 @@ SCISSORS.textContent = 'SCISSORS';
 
 let choicesList = BUTTONS_LIST.querySelectorAll('button');
 
+// Event listener to handle click on a choice button
 choicesList.forEach(choice => {
   choice.classList.add('btn');
   choice.addEventListener('click', handleChoice);
@@ -35,24 +36,30 @@ function setMessage(text, element) {
     let parent = element.parentNode;
     let paragraph = document.createElement('p');
 
-    //In case the parent element has more than one child then the last child is removed
+    // In case the parent element has more than one child then the last child is removed
     if (parent.childNodes.length > 1) {
       parent.removeChild(parent.lastChild);
     }
 
-    // We fill the new "paragraph" element and fill it with the message
+    // The given text fills the "paragraph" element and it is appended to the parent element
     paragraph.textContent = text;
     parent.appendChild(paragraph);
   }
 }
 
+// Remove 'picked' class from any element that has it
+function removeTransition() {
+  document.querySelectorAll('.picked').forEach(element => {
+    element.classList.remove('picked');
+  });
+}
+
 // # GAME
-let roundCounter = 1;
 let playerScore = 0;
 let computerScore = 0;
 
 function getComputerChoice() {
-  let randomNumber = parseInt(Math.random() * 3);
+  let randomNumber = Math.floor(Math.random() * 3);
 
   // Depending on the number obtained from randomNumber a move is returned
   switch (randomNumber) {
@@ -70,21 +77,29 @@ function getComputerChoice() {
 function getPlayerChoice(e) {
   let choice = e.target;
 
+  // The button clicked determines which move is returned
   if (
     choice.id === 'rock' ||
     choice.id === 'paper' ||
     choice.id === 'scissors'
   ) {
-    choice.setAttribute('style', 'background: #1E1E24; color: #F7F7FF; ');
+    removeTransition();
+
+    // Add class to clicked element
+    choice.classList.add('picked');
     return choice.id;
   }
 }
 
 function handleChoice(e) {
+  // Initial information is cleared
   INFO_MESSAGE.textContent = '';
 
+  // The value of "getPlayerChoice" and "getComputerChoice" are stored in variables
   const playerChoice = getPlayerChoice(e);
   const computerChoice = getComputerChoice();
+
+  // setMessage with the values of both choices and play the round
   setMessage(`${playerChoice} against ${computerChoice}`, INFO_MESSAGE);
   playRound(playerChoice, computerChoice);
 }

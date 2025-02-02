@@ -6,8 +6,14 @@ body {
   width: 120px;
   height: 60px;
   border: none;
+  border-radius: 16px;
 
   margin: 4px 12px;
-  transition: 0.5s;
-  transition-timing-function: ease-in-out;
+}
+
+.picked {
+  background-color: #1e1e24;
+  color: #f7f7ff;
+  transform: scale(1.1);
+  transition: transform 0.25s ease-in-out;
 }
