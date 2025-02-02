@@ -2,13 +2,22 @@ body {
   background-color: #bdd5ea;
 }
 
-.choice-btn {
+.choice-btn,
+[data-state='enable'] {
   width: 120px;
   height: 60px;
   border: none;
   border-radius: 16px;
-
   margin: 4px 12px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.choice-btn[disabled],
+[data-state='disable'] {
+  opacity: 0.8;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .picked {

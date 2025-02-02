@@ -1,15 +1,15 @@
 // # UI
-// Containers
+// CONTAINERS
 const SCOREBOARD = document.querySelector('#scoreboard.container');
 const INFO = document.querySelector('#info');
 const SCORE = document.querySelector('#scores');
 const BUTTONS_LIST = document.querySelector('#btn-list');
 
-// Info & Scores
+// INFO & SCORES
 const INFO_MESSAGE = document.querySelector('#info .message');
 const SCORE_MESSAGE = document.querySelector('#score .message');
 
-// Buttons
+// BUTTONS
 const ROCK = document.querySelector('#rock');
 const PAPER = document.querySelector('#paper');
 const SCISSORS = document.querySelector('#scissors');
@@ -26,6 +26,30 @@ choicesList.forEach(choice => {
   choice.addEventListener('click', handleChoice);
 });
 
+// Remove 'picked' class from any element that has it
+function removeTransition() {
+  document.querySelectorAll('.picked').forEach(element => {
+    element.classList.remove('picked');
+  });
+}
+
+function disableButtons() {
+  removeTransition();
+
+  choicesList.forEach(choice => {
+    choice.setAttribute('disabled', '');
+    choice.dataset.state = 'disabled';
+  });
+}
+
+function enableButtons() {
+  choicesList.forEach(choice => {
+    choice.removeAttribute('disabled');
+    choice.dataset.state = 'enabled';
+  });
+}
+
+// Information and score
 function capitalizeFirstChar(string) {
   if (!string) return '';
 
@@ -52,13 +76,6 @@ function setMessage(text, element) {
     paragraph.textContent = text;
     parent.appendChild(paragraph);
   }
-}
-
-// Remove 'picked' class from any element that has it
-function removeTransition() {
-  document.querySelectorAll('.picked').forEach(element => {
-    element.classList.remove('picked');
-  });
 }
 
 function displayScore(playerScore, computerScore) {
@@ -143,6 +160,8 @@ function playRound(player, computer) {
 
   displayRoundInfo(winner);
   displayScore(scores.playerScore, scores.computerScore);
+
+  if (scores.playerScore >= 5 || scores.computerScore >= 5) endGame();
 }
 
 function determineWinner(playerChoice, computerChoice) {
@@ -157,3 +176,19 @@ function updateScores(winner) {
   if (winner === 'computer') computerScore += 1;
   return { playerScore, computerScore };
 }
+
+// TODO: ADD FEATURE TO END GAME
+function endGame() {
+  disableButtons();
+}
+
+/* 
+Terms to end game:
+  * if playerScore or computer are higher than 5, stop game
+
+Actions to do END OF GAME
+  * Clear messages
+  * Add  a new End Of Game Message
+  * Disable game buttons
+  * Display PLAY AGAIN button
+*/
