@@ -23,6 +23,7 @@ let choicesList = BUTTONS_LIST.querySelectorAll('button');
 // Event listener to handle click on a choice button
 choicesList.forEach(choice => {
   choice.classList.add('btn');
+  choice.classList.add('pixelify-sans');
   choice.addEventListener('click', handleChoice);
 });
 

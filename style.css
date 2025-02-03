@@ -1,5 +1,36 @@
+.pixelify-sans {
+  font-family: 'Pixelify Sans', serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+  border: 1px solid red;
+}
+
 body {
   background-color: #bdd5ea;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Pixelify Sans', serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+header {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+
+  h1 {
+    font-size: 4.6rem;
+    padding: 0.6rem;
+  }
 }
 
 .choice-btn,
